@@ -1,84 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <link rel="stylesheet" href="css/styles.css">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IT Dashboard</title>
-    
-</head>
-<body>
-<nav class="navbar">
-   
-	   <h1>Navkis IT Dashboard</h1>
-	    <img src="images/navkis.png" alt="Company Logo" class="logo">
-</nav>
-
-   
-
-    <div class="container">
-        <!-- Month Filter -->
-        <div class="filter-box">
-            <label for="monthFilter">Filter by Month:</label>
-            <select id="monthFilter">
-                <option value="all">All</option>
-                <option value="01">January</option>
-                <option value="02">February</option>
-                <option value="03">March</option>
-                <option value="04">April</option>
-                <option value="05">May</option>
-                <option value="06">June</option>
-                <option value="07">July</option>
-                <option value="08">August</option>
-                <option value="09">September</option>
-                <option value="10">October</option>
-                <option value="11">November</option>
-                <option value="12">December</option>
-            </select>
-        </div>
-
-        <!-- Statistics -->
-        <div class="stat-box">
-            <div class="stat">Total Issues: <span id="totalIssues">0</span></div>
-            <div class="stat">Open Issues: <span id="openIssues">0</span></div>
-            <div class="stat">Closed Issues: <span id="closedIssues">0</span></div>
-        </div>
-
-        <!-- Location and Department Stats -->
-        <div class="dashboard-content">
-            <div class="location-container">
-                <h3>Location-wise Issues</h3>
-                <ul id="locationStats"></ul>
-            </div>
-
-            <div class="department-container">
-                <h3>Department-wise Issues</h3>
-                <ul id="departmentStats"></ul>
-            </div>
-        </div>
-
-         <!--  <button class="it-issues-btn" onclick="window.location.href='Issues.html'">Go to IT Issues</button>  -->
-		 <button class="it-issues-btn" onclick="window.location.href='index.html'">Home</button>
-		 <button class="it-issues-btn" onclick="window.location.href='issues.html'">Issues</button>
-    </div>
-<iframe id="hidden-frame" src="issues.html" style="display: none;"></iframe>
-   <script>
-   // Preload the ItIssues.html in the background
+<script>
 document.addEventListener("DOMContentLoaded", function () {
-        console.log("Issues.html is loading in an iframe.");
+    console.log("Loading issues.html in background...");
+
+    // Create an invisible iframe to load issues.html
+    let iframe = document.createElement("iframe");
+    iframe.src = "issues.html";
+    iframe.style.display = "none";
+
+    iframe.onload = function () {
+        console.log("issues.html fully loaded! Now updating dashboard...");
+        
+        // Wait for a slight delay to ensure localStorage is updated
+        setTimeout(() => {
+            updateDashboard("all"); // Load dashboard data only after issues.html is fully loaded
+        }, 500); // Adjust the delay if needed
+    };
+
+    document.body.appendChild(iframe);
+
+    document.getElementById("monthFilter").addEventListener("change", function () {
+        let selectedMonth = this.value;
+        updateDashboard(selectedMonth);
     });
+});
 
+function updateDashboard(selectedMonth) {
+    console.log("Updating dashboard for month:", selectedMonth);
 
-    document.addEventListener("DOMContentLoaded", function () {
-        updateDashboard("all"); // Load all data by default
-
-        document.getElementById("monthFilter").addEventListener("change", function () {
-            let selectedMonth = this.value;
-            updateDashboard(selectedMonth);
-        });
-    });
-
-  function updateDashboard(selectedMonth) {
     let totalIssues = selectedMonth === "all" ? localStorage.getItem("totalIssues") : localStorage.getItem(`month_${selectedMonth}_Total`);
     let openIssues = selectedMonth === "all" ? localStorage.getItem("openIssues") : localStorage.getItem(`month_${selectedMonth}_Open`);
     let closedIssues = selectedMonth === "all" ? localStorage.getItem("closedIssues") : localStorage.getItem(`month_${selectedMonth}_Closed`);
@@ -103,9 +51,9 @@ function updateLocationStats(selectedMonth) {
         open = open || 0;
 
         let listItem = document.createElement("li");
-    listItem.innerHTML = `${loc.charAt(0).toUpperCase() + loc.slice(1)}: 
-    <span style="color: red; font-weight: bold;">⚠ ${open} Open</span> | 
-    <span style="color: green; font-weight: bold;">✅ ${total} Total</span>`;
+        listItem.innerHTML = `${loc.charAt(0).toUpperCase() + loc.slice(1)}: 
+        <span style="color: red; font-weight: bold;">⚠ ${open} Open</span> | 
+        <span style="color: green; font-weight: bold;">✅ ${total} Total</span>`;
 
         locationStatsList.appendChild(listItem);
     });
@@ -124,13 +72,9 @@ function updateDepartmentStats(selectedMonth) {
 
         let listItem = document.createElement("li");
         listItem.innerHTML = `${dept.charAt(0).toUpperCase() + dept.slice(1)}: 
-		<span style="color: red; font-weight: bold;">⚠ ${open} Open</span> | 
-    <span style="color: green; font-weight: bold;">✅ ${total} Total</span>`;
+        <span style="color: red; font-weight: bold;">⚠ ${open} Open</span> | 
+        <span style="color: green; font-weight: bold;">✅ ${total} Total</span>`;
         departmentStatsList.appendChild(listItem);
     });
 }
-
 </script>
-
-</body>
-</html>
