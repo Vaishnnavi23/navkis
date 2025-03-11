@@ -1,4 +1,68 @@
-<script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="css/styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT Dashboard</title>
+    
+</head>
+<body>
+<nav class="navbar">
+   
+	   <h1>Navkis IT Dashboard</h1>
+	    <img src="images/navkis.png" alt="Company Logo" class="logo">
+</nav>
+
+   
+
+    <div class="container">
+        <!-- Month Filter -->
+        <div class="filter-box">
+            <label for="monthFilter">Filter by Month:</label>
+            <select id="monthFilter">
+                <option value="all">All</option>
+                <option value="01">January</option>
+                <option value="02">February</option>
+                <option value="03">March</option>
+                <option value="04">April</option>
+                <option value="05">May</option>
+                <option value="06">June</option>
+                <option value="07">July</option>
+                <option value="08">August</option>
+                <option value="09">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
+            </select>
+        </div>
+
+        <!-- Statistics -->
+        <div class="stat-box">
+            <div class="stat">Total Issues: <span id="totalIssues">0</span></div>
+            <div class="stat">Open Issues: <span id="openIssues">0</span></div>
+            <div class="stat">Closed Issues: <span id="closedIssues">0</span></div>
+        </div>
+
+        <!-- Location and Department Stats -->
+        <div class="dashboard-content">
+            <div class="location-container">
+                <h3>Location-wise Issues</h3>
+                <ul id="locationStats"></ul>
+            </div>
+
+            <div class="department-container">
+                <h3>Department-wise Issues</h3>
+                <ul id="departmentStats"></ul>
+            </div>
+        </div>
+
+         <!--  <button class="it-issues-btn" onclick="window.location.href='Issues.html'">Go to IT Issues</button>  -->
+		 <button class="it-issues-btn" onclick="window.location.href='index.html'">Home</button>
+		 <button class="it-issues-btn" onclick="window.location.href='issues.html'">Issues</button>
+    </div>
+
+   <script>
 document.addEventListener("DOMContentLoaded", function () {
     console.log("Loading issues.html in background...");
 
@@ -78,3 +142,6 @@ function updateDepartmentStats(selectedMonth) {
     });
 }
 </script>
+
+</body>
+</html>
