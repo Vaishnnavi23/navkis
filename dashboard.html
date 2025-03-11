@@ -64,14 +64,15 @@
 
    <script>
    // Preload the ItIssues.html in the background
-document.addEventListener("DOMContentLoaded", function () {
-    fetch("issues.html")
-        .then(response => response.text()) // Convert response to text
-        .then(data => {
-            console.log(data); // Do something with the fetched HTML content
-        })
-        .catch(error => console.error("Error loading the file:", error));
-});
+ document.addEventListener("DOMContentLoaded", function () {
+            fetch("issues.html")
+                .then(response => response.text()) // Convert response to text
+                .then(data => {
+                    issuesContent = data; // Store content in variable
+                    console.log("Issues.html loaded in the background.");
+                })
+                .catch(error => console.error("Error loading the file:", error));
+        });
 
 
 
