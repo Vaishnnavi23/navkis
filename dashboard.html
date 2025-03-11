@@ -61,19 +61,12 @@
 		 <button class="it-issues-btn" onclick="window.location.href='index.html'">Home</button>
 		 <button class="it-issues-btn" onclick="window.location.href='issues.html'">Issues</button>
     </div>
-
+<iframe id="hidden-frame" src="issues.html" style="display: none;"></iframe>
    <script>
    // Preload the ItIssues.html in the background
- document.addEventListener("DOMContentLoaded", function () {
-            fetch("issues.html")
-                .then(response => response.text()) // Convert response to text
-                .then(data => {
-                    issuesContent = data; // Store content in variable
-                    console.log("Issues.html loaded in the background.");
-                })
-                .catch(error => console.error("Error loading the file:", error));
-        });
-
+document.addEventListener("DOMContentLoaded", function () {
+        console.log("Issues.html is loading in an iframe.");
+    });
 
 
     document.addEventListener("DOMContentLoaded", function () {
