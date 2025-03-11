@@ -14,12 +14,7 @@
 	    <img src="images/navkis.png" alt="Company Logo" class="logo">
 </nav>
 
-   <div id="loading-spinner">
-    <p>Loading issues... Please wait</p>
-</div>
-
-<!-- The iframe -->
-<iframe id="issuesIframe" src="issues.html"></iframe>
+   
 
     <div class="container">
         <!-- Month Filter -->
@@ -68,50 +63,36 @@
     </div>
 
    <script>
-// Get references
-let iframe = document.getElementById("issuesIframe");
-let spinner = document.getElementById("loading-spinner");
-
-// Show spinner when iframe starts loading
-spinner.style.display = "block";
-
-iframe.onload = function () {
-    console.log("issues.html iframe loaded! Waiting for content...");
-
-    let iframeWin = iframe.contentWindow;
-
-    iframeWin.onload = function () {
-        console.log("issues.html FULLY loaded, now waiting for data...");
-
-        // Wait until data is fetched inside issues.html
-        let checkData = setInterval(() => {
-            if (localStorage.getItem("issuesReady") === "true") {
-                console.log("Data fully loaded! Hiding spinner...");
-                spinner.style.display = "none"; // Hide spinner
-                updateDashboard("all"); // Now update dashboard
-                clearInterval(checkData);
-            }
-        }, 500); // Check every 500ms
-    };
-};
+   // Preload the ItIssues.html in the background
+ document.addEventListener("DOMContentLoaded", function () {
+            fetch("issues.html")
+                .then(response => response.text()) // Convert response to text
+                .then(data => {
+                    issuesContent = data; // Store content in variable
+                    console.log("Issues.html loaded in the background.");
+                })
+                .catch(error => console.error("Error loading the file:", error));
+        });
 
 
-    document.getElementById("monthFilter").addEventListener("change", function () {
-        let selectedMonth = this.value;
-        updateDashboard(selectedMonth);
 
-});
+    document.addEventListener("DOMContentLoaded", function () {
+        updateDashboard("all"); // Load all data by default
 
-function updateDashboard(selectedMonth) {
-    console.log("Updating dashboard for month:", selectedMonth);
+        document.getElementById("monthFilter").addEventListener("change", function () {
+            let selectedMonth = this.value;
+            updateDashboard(selectedMonth);
+        });
+    });
 
+  function updateDashboard(selectedMonth) {
     let totalIssues = selectedMonth === "all" ? localStorage.getItem("totalIssues") : localStorage.getItem(`month_${selectedMonth}_Total`);
     let openIssues = selectedMonth === "all" ? localStorage.getItem("openIssues") : localStorage.getItem(`month_${selectedMonth}_Open`);
     let closedIssues = selectedMonth === "all" ? localStorage.getItem("closedIssues") : localStorage.getItem(`month_${selectedMonth}_Closed`);
 
-   // document.getElementById("totalIssues").innerText = totalIssues || 0;
-   // document.getElementById("openIssues").innerText = openIssues || 0;
-   // document.getElementById("closedIssues").innerText = closedIssues || 0;
+    document.getElementById("totalIssues").innerText = totalIssues || 0;
+    document.getElementById("openIssues").innerText = openIssues || 0;
+    document.getElementById("closedIssues").innerText = closedIssues || 0;
 
     updateLocationStats(selectedMonth);
     updateDepartmentStats(selectedMonth);
@@ -129,9 +110,9 @@ function updateLocationStats(selectedMonth) {
         open = open || 0;
 
         let listItem = document.createElement("li");
-        listItem.innerHTML = `${loc.charAt(0).toUpperCase() + loc.slice(1)}: 
-        <span style="color: red; font-weight: bold;">⚠ ${open} Open</span> | 
-        <span style="color: green; font-weight: bold;">✅ ${total} Total</span>`;
+    listItem.innerHTML = `${loc.charAt(0).toUpperCase() + loc.slice(1)}: 
+    <span style="color: red; font-weight: bold;">⚠ ${open} Open</span> | 
+    <span style="color: green; font-weight: bold;">✅ ${total} Total</span>`;
 
         locationStatsList.appendChild(listItem);
     });
@@ -150,11 +131,12 @@ function updateDepartmentStats(selectedMonth) {
 
         let listItem = document.createElement("li");
         listItem.innerHTML = `${dept.charAt(0).toUpperCase() + dept.slice(1)}: 
-        <span style="color: red; font-weight: bold;">⚠ ${open} Open</span> | 
-        <span style="color: green; font-weight: bold;">✅ ${total} Total</span>`;
+		<span style="color: red; font-weight: bold;">⚠ ${open} Open</span> | 
+    <span style="color: green; font-weight: bold;">✅ ${total} Total</span>`;
         departmentStatsList.appendChild(listItem);
     });
 }
+
 </script>
 
 </body>
