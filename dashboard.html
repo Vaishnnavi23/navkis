@@ -31,9 +31,9 @@ function updateDashboard(selectedMonth) {
     let openIssues = selectedMonth === "all" ? localStorage.getItem("openIssues") : localStorage.getItem(`month_${selectedMonth}_Open`);
     let closedIssues = selectedMonth === "all" ? localStorage.getItem("closedIssues") : localStorage.getItem(`month_${selectedMonth}_Closed`);
 
-    document.getElementById("totalIssues").innerText = totalIssues || 0;
-    document.getElementById("openIssues").innerText = openIssues || 0;
-    document.getElementById("closedIssues").innerText = closedIssues || 0;
+   // document.getElementById("totalIssues").innerText = totalIssues || 0;
+   // document.getElementById("openIssues").innerText = openIssues || 0;
+   // document.getElementById("closedIssues").innerText = closedIssues || 0;
 
     updateLocationStats(selectedMonth);
     updateDepartmentStats(selectedMonth);
