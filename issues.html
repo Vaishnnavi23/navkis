@@ -263,6 +263,8 @@ let closedIssues = table
     localStorage.setItem("totalIssues", totalIssues);
     localStorage.setItem("openIssues", openIssues);
     localStorage.setItem("closedIssues", closedIssues);
+
+		    
 	$("#totalIssues").text(totalIssues);
     $("#openIssues").text(openIssues);
 	$("#closedIssues").text(closedIssues);
@@ -366,7 +368,7 @@ let closedIssues = table
             localStorage.setItem(`month_${month}_${dept}Open`, monthData[month].departments[dept].open);
         });
     });
-
+localStorage.setItem("issuesReady", "true");
     //console.log("Updated Location Data:", locationData);
     //console.log("Updated Department Data:", departmentData);
    // console.log("Updated Monthly Data:", monthData);
