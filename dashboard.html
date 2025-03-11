@@ -63,32 +63,33 @@
     </div>
 
    <script>
-document.addEventListener("DOMContentLoaded", function () {
-    console.log("Loading issues.html in background...");
+// Get references
+let iframe = document.getElementById("issuesIframe");
+let spinner = document.getElementById("loading-spinner");
 
-    // Create an invisible iframe to load issues.html
-    let iframe = document.createElement("iframe");
-    iframe.src = "issues.html";
-    iframe.style.display = "none";
+// Show spinner when iframe starts loading
+spinner.style.display = "block";
 
 iframe.onload = function () {
-    console.log("issues.html iframe loaded! Waiting for inner content...");
+    console.log("issues.html iframe loaded! Waiting for content...");
 
-    let iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+    let iframeWin = iframe.contentWindow;
 
-    if (iframeDoc.readyState === "complete") {
-        console.log("issues.html inner content is fully loaded!");
-        updateDashboard("all"); // Call only when everything is ready
-    } else {
-        iframeDoc.addEventListener("DOMContentLoaded", () => {
-            console.log("issues.html inner content just finished loading!");
-            updateDashboard("all");
-        });
-    }
+    iframeWin.onload = function () {
+        console.log("issues.html FULLY loaded, now waiting for data...");
+
+        // Wait until data is fetched inside issues.html
+        let checkData = setInterval(() => {
+            if (localStorage.getItem("issuesReady") === "true") {
+                console.log("Data fully loaded! Hiding spinner...");
+                spinner.style.display = "none"; // Hide spinner
+                updateDashboard("all"); // Now update dashboard
+                clearInterval(checkData);
+            }
+        }, 500); // Check every 500ms
+    };
 };
 
-
-    document.body.appendChild(iframe);
 
     document.getElementById("monthFilter").addEventListener("change", function () {
         let selectedMonth = this.value;
