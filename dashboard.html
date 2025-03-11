@@ -71,18 +71,20 @@ document.addEventListener("DOMContentLoaded", function () {
     iframe.src = "issues.html";
     iframe.style.display = "none";
 
-  iframe.onload = function () {
-    console.log("issues.html fully loaded! Now checking for updates...");
-    
-    let observer = new MutationObserver(() => {
-        if (localStorage.getItem("totalIssues")) { // Replace 'someKey' with an actual key updated by issues.html
-            console.log("localStorage updated! Now updating dashboard...");
-            updateDashboard("all");
-            observer.disconnect(); // Stop observing once detected
-        }
-    });
+iframe.onload = function () {
+    console.log("issues.html iframe loaded! Waiting for inner content...");
 
-    observer.observe(document, { subtree: true, childList: true });
+    let iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+
+    if (iframeDoc.readyState === "complete") {
+        console.log("issues.html inner content is fully loaded!");
+        updateDashboard("all"); // Call only when everything is ready
+    } else {
+        iframeDoc.addEventListener("DOMContentLoaded", () => {
+            console.log("issues.html inner content just finished loading!");
+            updateDashboard("all");
+        });
+    }
 };
 
 
